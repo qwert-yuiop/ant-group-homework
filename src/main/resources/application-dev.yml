@@ -1,6 +1,19 @@
 server:
   port: 8090
 
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: hyw20000611
+
+mybatis-plus:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.ant.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印SQL日志（测试环境用）
+
 # 日志
 logging:
   level:

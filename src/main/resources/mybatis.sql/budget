@@ -1,0 +1,8 @@
+CREATE TABLE `budget` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `total_amount` decimal(10,2) NOT NULL DEFAULT 0 COMMENT '总预算金额',
+  `version` int NOT NULL DEFAULT 0 COMMENT '版本号（用于乐观锁）',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预算表';

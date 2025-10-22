@@ -1,6 +1,6 @@
 package com.ant.test;
 
-import com.ant.demo.FundPoolDemo1;
+import com.ant.service.FundPoolService;
 import com.ant.dto.AllocationSupplyResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,18 +11,17 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 
 // 启动Spring上下文，扫描并加载所有Bean
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FundPoolTestOne {
+public class FundPoolTest {
 
     // 注入真实的业务服务（非模拟）
     @Autowired
-    private FundPoolDemo1 fundPoolDemo1;
+    private FundPoolService fundPoolService;
 
     // 测试用例中常用的金额常量
     private static final BigDecimal BD_100 = new BigDecimal("100.00");
@@ -48,7 +47,7 @@ public class FundPoolTestOne {
         BigDecimal amountToWithdraw = BD_300;
 
         // 执行方法
-        List<AllocationSupplyResult> results = fundPoolDemo1.allocateWithdrawals(pools, amountToWithdraw);
+        List<AllocationSupplyResult> results = fundPoolService.allocateWithdrawals(pools, amountToWithdraw);
 
         // 断言结果数量
         assertEquals(3, results.size());
@@ -89,7 +88,7 @@ public class FundPoolTestOne {
         List<BigDecimal> pools = Arrays.asList(BD_200_33, BD_300_67);
         BigDecimal amountToWithdraw = new BigDecimal("100");
 
-        List<AllocationSupplyResult> results = fundPoolDemo1.allocateWithdrawals(pools, amountToWithdraw);
+        List<AllocationSupplyResult> results = fundPoolService.allocateWithdrawals(pools, amountToWithdraw);
 
         // 断言总支出
         BigDecimal totalWithdrawn = results.stream()
@@ -114,7 +113,7 @@ public class FundPoolTestOne {
         List<BigDecimal> pools = Arrays.asList(BD_100, BD_200);
         BigDecimal amountToWithdraw = BD_400;
 
-        List<AllocationSupplyResult> results = fundPoolDemo1.allocateWithdrawals(pools, amountToWithdraw);
+        List<AllocationSupplyResult> results = fundPoolService.allocateWithdrawals(pools, amountToWithdraw);
 
         // 断言支出金额
         assertEquals(new BigDecimal("150.00"), results.get(0).getAllocationShortfalls());
@@ -135,7 +134,7 @@ public class FundPoolTestOne {
         List<BigDecimal> pools = Collections.singletonList(BD_500);
         BigDecimal amountToWithdraw = new BigDecimal("200");
 
-        List<AllocationSupplyResult> results = fundPoolDemo1.allocateWithdrawals(pools, amountToWithdraw);
+        List<AllocationSupplyResult> results = fundPoolService.allocateWithdrawals(pools, amountToWithdraw);
 
         assertEquals(1, results.size());
         AllocationSupplyResult result = results.get(0);
@@ -150,27 +149,27 @@ public class FundPoolTestOne {
     @Test(expected = IllegalArgumentException.class)
     public void testAllocateWithdrawals_InvalidInput_EmptyPools() {
         // 空资金池列表（预期抛出异常）
-        fundPoolDemo1.allocateWithdrawals(Collections.emptyList(), BD_100);
+        fundPoolService.allocateWithdrawals(Collections.emptyList(), BD_100);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAllocateWithdrawals_InvalidInput_NegativeAmount() {
         // 负支出金额（预期抛出异常）
         List<BigDecimal> pools = Arrays.asList(BD_100);
-        fundPoolDemo1.allocateWithdrawals(pools, new BigDecimal("-50"));
+        fundPoolService.allocateWithdrawals(pools, new BigDecimal("-50"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAllocateWithdrawals_InvalidInput_NullPool() {
         // 资金池包含null（预期抛出异常）
         List<BigDecimal> pools = Arrays.asList(BD_100, null);
-        fundPoolDemo1.allocateWithdrawals(pools, BD_100);
+        fundPoolService.allocateWithdrawals(pools, BD_100);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAllocateWithdrawals_InvalidInput_NullAmount() {
         // 支出金额为null（预期抛出异常）
         List<BigDecimal> pools = Arrays.asList(BD_100);
-        fundPoolDemo1.allocateWithdrawals(pools, null);
+        fundPoolService.allocateWithdrawals(pools, null);
     }
 }

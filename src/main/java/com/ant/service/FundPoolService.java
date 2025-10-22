@@ -1,4 +1,4 @@
-package com.ant.demo;
+package com.ant.service;
 
 import com.ant.dto.AllocationSupplyResult;
 import com.ant.utils.FundPoolUtils;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class FundPoolDemo1 {
+public class FundPoolService {
     @Autowired
     private FundPoolUtils fundPoolUtils;
 
